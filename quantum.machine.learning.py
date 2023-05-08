@@ -1,6 +1,6 @@
 from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, execute, Aer
 from qiskit.circuit import Parameter
-from qiskit.aqua.components.optimizers import COBYLA
+from qiskit.algorithms.optimizers import COBYLA
 import numpy as np
 
 # Define the initial quantum circuit with 2 qubits
@@ -41,9 +41,9 @@ def cost_function(params, data, labels):
     num_folds = 25  # Number of times to apply the folding operation
     folded_qc = apply_folding_mechanic(initial_qc, num_folds, data, params[:2*num_folds])
     var_qc = create_variational_circuit(params[2*num_folds:])
-    qc = folded_qc + var_qc
+    qc = folded_qc.compose(var_qc)
     qc.add_register(ClassicalRegister(1, 'c'))
-    qc.measure(0, 'c')
+    qc.measure(0, 0)  # Measure qubit 0 and store the result in classical bit 0
 
     # Simulate the circuit
     simulator = Aer.get_backend('qasm_simulator')
@@ -58,6 +58,8 @@ def cost_function(params, data, labels):
         elif outcome == '1' and labels == 1:
             cost -= count
     return cost
+
+
 
 # Generate some random training data
 num_samples = 10
@@ -79,11 +81,12 @@ def objective_function(params):
     return cost
 
 # Run the optimizer
-result = optimizer.optimize(num_vars=len(params), objective_function=objective_function, initial_point=params)
+result = optimizer.minimize(fun=objective_function, x0=params)
 
 # Print the optimal parameters
 print('Optimal parameters:', result[0])
 
+# Define a function for making predictions
 # Define a function for making predictions
 def predict(params, data):
     # Create the quantum circuit
@@ -91,9 +94,9 @@ def predict(params, data):
     num_folds = 25  # Number of times to apply the folding operation
     folded_qc = apply_folding_mechanic(initial_qc, num_folds, data, params[:2*num_folds])
     var_qc = create_variational_circuit(params[2*num_folds:])
-    qc = folded_qc + var_qc
+    qc = folded_qc.compose(var_qc)
     qc.add_register(ClassicalRegister(1, 'c'))
-    qc.measure(0, 'c')
+    qc.measure(0, 0)  # Measure qubit 0 and store the result in classical bit 0
 
     # Simulate the circuit
     simulator = Aer.get_backend('qasm_simulator')
@@ -105,6 +108,7 @@ def predict(params, data):
         return 0
     else:
         return 1
+
 
 # Make predictions on the training data
 predictions = [predict(result[0], x) for x in data]
