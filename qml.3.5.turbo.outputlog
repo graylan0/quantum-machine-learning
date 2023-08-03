@@ -1,0 +1,28 @@
+PS C:\Users\Shadow\gpt-qml-sentiment>  c:; cd 'c:\Users\Shadow\gpt-qml-sentiment'; & 'C:\Users\Shadow\AppData\Local\Programs\Python\Python310\python.exe' 'c:\Users\Shadow\.vscode\extensions\ms-python.python-2023.12.0\pythonFiles\lib\python\debugpy\adapter/../..\debugpy\launcher' '55891' '--' 'C:\Users\Shadow\gpt-qml-sentiment\importtest openai.py' 
+Detected Emotion: admiration
+Emotion Parameters: [0.0, 1.0]
+Z Expectations: [tensor(1., requires_grad=True), tensor(1., requires_grad=True)]
+Color Code: Gray
+Full response from GPT-3.5 turbo:
+{
+  "id": "chatcmpl-7jW8fjtdBhlopwP38x8ykwk6i6zMW",
+  "object": "chat.completion",
+  "created": 1691082657,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"amplitudes\": [0.0, 1.0]}"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 169,
+    "completion_tokens": 15,
+    "total_tokens": 184
+  }
+}
+User reply:
