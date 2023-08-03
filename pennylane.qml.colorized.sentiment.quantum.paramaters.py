@@ -117,7 +117,7 @@ if __name__ == "__main__":
     model = EmotionDetector()
 
     # Input text for analysis
-    input_text = "hackers are good sometimes"
+    input_text = "i'm curious about jane"
 
     emotion = model.detect_emotion(input_text)
     print(f"Detected Emotion: {emotion}")
@@ -137,3 +137,4 @@ if __name__ == "__main__":
     print(json.dumps(response, indent=2))
     print("User reply:")
     print(user_reply)
+
