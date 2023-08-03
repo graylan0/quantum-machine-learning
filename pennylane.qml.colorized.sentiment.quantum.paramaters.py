@@ -30,7 +30,7 @@ class EmotionDetector:
 
     def map_emotion_to_qml_parameters(self, emotion):
         # Use GPT-3.5 turbo to determine the mapping of emotions to QML parameters
-        prompt = f"You are an AI language model. Map the emotion '{emotion}' to the Quantum Language Model parameters.\n\nTo encode the emotion into the Quantum Language Model, you need to provide the emotion parameters in the following format: {{\"amplitudes\": [0.1, 0.9]}}.\n\nPlease specify the values of amplitudes for each qubit in the range [0, 1]. For example, you can provide 'amplitudes': [0.2, 0.7] or 'amplitudes': [0.0, 1.0]. Only provide these values no other words or data."
+        prompt = f"You are an AI language model. Map the emotion '{emotion}' to the Quantum Language Model parameters.\n\nTo encode the emotion into the Quantum Language Model, you need to provide the emotion parameters in the following format: {{\"amplitudes\": [0.1, 0.9]}}.\n\nPlease specify the values of amplitudes for each qubit in the range [0, 1]. For example, you can provide 'amplitudes': [0.2, 0.7] or 'amplitudes': [0.0, 1.0]. Only provide these values; no other words or data."
 
         # Add a system message to guide the user on providing the emotion parameters
         system_message = {'role': 'system', 'content': 'You are a code generation model. Given a user\'s reply, you should take the reply and run the program to determine the mapping of emotion parameters.'}
@@ -63,6 +63,9 @@ class EmotionDetector:
         return emotion_params
 
     def encode_emotion_into_qml(self, emotion_params):
+        # Seed the random number generator for reproducibility
+        np.random.seed(42)
+
         # Encode the emotion parameters into a quantum state using the specified quantum gates
         @qml.qnode(self.qml_model.dev)
         def circuit(params):
